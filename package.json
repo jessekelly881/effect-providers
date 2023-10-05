@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "nx affected:test"
+    "test": "nx affected:test",
+    "docs": "nx run-many -t docs"
   },
   "keywords": [],
   "author": "Jesse Kelly",
