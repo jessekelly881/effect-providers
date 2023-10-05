@@ -1,5 +1,5 @@
 {
-  "name": "@effect-providers/providers",
+  "name": "@effect-providers/core",
   "version": "0.0.1",
   "description": "",
   "private": false,
