@@ -1,14 +1,13 @@
 import * as LDClient from 'launchdarkly-js-client-sdk';
-import * as Layer from "effect/Layer"
-import * as Chunk from "effect/Chunk"
-import * as Effect from "effect/Effect"
-import * as Stream from "effect/Stream"
+import { Layer, Effect, Stream, Config, Chunk, pipe } from "effect"
 import * as FeatureFlags from "@effect-providers/core/dist/FeatureFlags"
 import * as AppError from "@effect-providers/core/dist/Error"
 
 
+
 // @internal
 type InitProps = Parameters<typeof LDClient.initialize>
+type Tail<A> = A extends [infer _, ...infer Rest] ? Rest : never
 
 // @internal
 const init = (...props: InitProps) => Effect.async<never, Error, LDClient.LDClient>((resume) => {
@@ -36,3 +35,12 @@ export const layer = (...props: InitProps) => Layer.effect(
         }))
     )
 )
+
+/**
+ * Creates layer from Config 
+ */
+export const layerFromConfig = (config: Config.Config<string>, ...props: Tail<InitProps>) => pipe(
+    Effect.map(Effect.config(config), key => layer(key, ...props)),
+    Layer.unwrapEffect
+);
+
